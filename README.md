@@ -21,5 +21,5 @@ Test coverage with Mocha and Istanbul
 
     npm test
 
-![Build Status](https://travis-ci.org/hugeinc/tacobot.svg?branch=master)](https://travis-ci.org/hugeinc/tacobot)
+[![Build Status](https://travis-ci.org/hugeinc/tacobot.svg?branch=master)](https://travis-ci.org/hugeinc/tacobot)
 
