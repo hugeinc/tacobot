@@ -1,15 +1,6 @@
 // Get the response object. Probably subject to change
-var responses = require('./responses');
-
-/**
- * Finds a random index in the passed array
- * @param  {Array} arr 			 Array to find random index of
- * @return {String|Array|Object} The value of the random index
- */
-exports.getRandomIndex = function (arr) {
-	var index = Math.round(Math.random() * (arr.length - 1))
-	return arr[index];
-};
+var responses = require('./responses'),
+    util = require('./util');
 
 /**
  * Takes action on various room events. See
@@ -38,7 +29,7 @@ exports.roomEvent = function (data, next) {
 exports.message = function (data, next) {
 
 	// Random response type
-	var responseType = exports.getRandomIndex(responses);
+	var responseType = util.getRandomIndex(responses);
 
 	var response = exports.messageType(data, responseType);
 
@@ -58,7 +49,7 @@ exports.messageType = function (data, responseType) {
 	var user = data.item.message.from.name;
 
 	// Get a random message
-	var message = exports.getRandomIndex(responseType.messages);
+	var message = util.getRandomIndex(responseType.messages);
 
 	// Take action based on random message type
 	switch (responseType.type) {

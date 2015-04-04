@@ -28,26 +28,6 @@ describe('Hip-Chat Webhook', function () {
 		'webhook_id': 578829
 	};
 
-	it('Generates a random number based on array length', function (done) {
-
-		var arr = [0, 1, 2, 3];
-		var result = tacobot.getRandomIndex(arr);
-		result.should.be.a.Number;
-
-		done();
-
-	});
-
-	it('Generates a random string based on array length', function (done) {
-
-		var arr = ['apple', 'banana', 'cherry', 'diakon'];
-		var result = tacobot.getRandomIndex(arr);
-		result.should.be.a.String;
-
-		done();
-
-	});
-
 	it('Should respond with a random message', function (done) {
 
 		tacobot.roomEvent(fakeWebHook, function (err, message) {
