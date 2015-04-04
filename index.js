@@ -1,12 +1,17 @@
 var tacobot		= require('./app/tacobot');
 var express 	= require('express');
 	bodyParser 	= require('body-parser'),
-	app 		= express();
+    path        = require('path'),
+    app 		= express();
 
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+
 app.use(bodyParser.json());
+
+// view instanbul test coverage over localhost http://localhost:8000/test-coverage
+app.use('/test-coverage', express.static(path.join(__dirname , 'test-coverage')));
 
 app.get('/', function (req, res) {
 	res.end('taco!');
