@@ -30,21 +30,22 @@ describe('Hip-Chat Webhook', function () {
 
 	it('Should respond with a random message', function (done) {
 
-		tacobot.roomEvent(fakeWebHook, function (err, message) {
+		tacobot.roomEvent(fakeWebHook)
+            .always(function(resp){
 
-			should.not.exist(err);
-			should.exist(message);
+                should.exist(resp);
+                should.not.exist(resp.error);
 
-			message.should.be.an.object;
-			message.should.have.property('color').which.is.a.string;
-			message.should.have.property('message_prefix').which.is.a.string;
-			message.should.have.property('message').which.is.a.string;
-			message.should.have.property('notify').which.is.a.boolean;
-			message.should.have.property('message_format').which.is.a.string;
+                resp.should.be.an.object;
+                resp.should.have.property('color').which.is.a.string;
+                resp.should.have.property('message_prefix').which.is.a.string;
+                resp.should.have.property('message').which.is.a.string;
+                resp.should.have.property('notify').which.is.a.boolean;
+                resp.should.have.property('message_format').which.is.a.string;
 
-			done();
+                done();
 
-		});
+            });
 
 	});
 
@@ -107,10 +108,10 @@ describe('Hip-Chat Webhook', function () {
 			'event': 'room_enter'
 		};
 
-		tacobot.roomEvent(fakeWebHook, function (err, message) {
+		tacobot.roomEvent(fakeWebHook).always(function (resp) {
 
-			should.not.exist(err);
-			should.not.exist(message);
+			should.exist(resp.error);
+            resp.error.should.be.a.string;
 			done();
 
 		});		

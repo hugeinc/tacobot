@@ -1,39 +1,52 @@
 // Get the response object. Probably subject to change
 var responses = require('./responses'),
     util = require('./util');
+    $ = require('jquery-deferred');
 
 /**
  * Takes action on various room events. See
  * https://www.hipchat.com/docs/apiv2/webhooks for more information
  * @param  {Object}   data Hipchat Web Hook Object
- * @param  {Function} next Callback
- * @return {Object}	       Returns the response to be sent to Hip Chat
+ * @return {jquery-deferred} Resolves with response to be sent to Hip Chat, rejects with an error message
+ *
  */
-exports.roomEvent = function (data, next) {
+exports.roomEvent = function (data) {
+
+    var def = $.Deferred();
 
 	switch (data.event) {
 		case 'room_message':
-			return exports.message(data, next);
-		default:
-			return next(null, null);
+			def = exports.message(data);
+		break;
+        default:
+			def.reject({
+               error : 'tacobot doesn\'t currently support event: '
+                + data.event + '. Lo siento.'
+            });
+            break;
 	}
+
+    return def.promise();
 
 };
 
 /**
  * Generates a random response and returns it
  * @param  {Object}   data Hipchat Web Hook Object
- * @param  {Function} next Callback
- * @return {Object}	       Returns the response to be sent to Hip Chat
+ * @return {jquery-deferred} Resolves with response to be sent to Hip Chat, rejects with an error message
  */
-exports.message = function (data, next) {
+exports.message = function (data) {
 
-	// Random response type
+    var def = $.Deferred();
+
+    // Random response type
 	var responseType = util.getRandomIndex(responses);
 
 	var response = exports.messageType(data, responseType);
 
-	return next(null, response);
+    def.resolve(response);
+
+    return def.promise();
 
 };
 

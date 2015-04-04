@@ -1,5 +1,4 @@
 var tacobot		= require('./app/tacobot');
-
 var express 	= require('express');
 	bodyParser 	= require('body-parser'),
 	app 		= express();
@@ -14,11 +13,10 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', function (req, res) {
-    
-	tacobot.roomEvent(req.body, function (err, message) {
-		res.json(message);
-	});
 
+	tacobot.roomEvent(req.body).always(function(message){
+        res.json(message);
+    });
 });
 
 app.listen(8000);
