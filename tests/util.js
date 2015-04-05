@@ -1,6 +1,14 @@
 var util = require('../app/util');
 var should = require('should');
 
+var arr = [
+    {meat : 'chicken', cheese:true},
+    {meat : 'steak', cheese:true},
+    {meat : 'barbacoa', cheese:false},
+    {meat : 'pork', cheese:true},
+    {meat : 'cessina', cheese: false}
+];
+
 describe('util.parseJSON', function (){
 
     it('Parses good JSON', function(){
@@ -27,14 +35,51 @@ describe('util.parseJSON', function (){
 describe('util.getRandomIndex', function(){
 
     it('Fetches a random item from an array', function (done) {
-        var arr = ['chicken', 'pork', 'carne asada', 'onions'];
         var result = util.getRandomIndex(arr);
-        result.should.be.a.String;
+        result.should.be.a.Object;
+        result.meat.should.be.a.String;
         done();
     });
 
     it('Doesn\'t break if an array is empty', function (done) {
         var result = util.getRandomIndex([]);
+        (result === undefined).should.be.true;
+        done();
+    });
+});
+
+describe('util.filterBy', function(){
+
+    it('Fetches an items from an array with a matching value', function (done) {
+
+        var result = util.filterBy(arr, 'cheese', true);
+        result.should.be.a.Array;
+        result.length.should.equal(3);
+        done();
+    });
+
+    it('Returns an empty array no matching values', function (done) {
+        var result = util.filterBy(arr, 'meat', 'fish');
+        result.should.be.a.Array;
+        result.length.should.equal(0);
+        done();
+    });
+});
+
+describe('util.findBy', function(){
+
+    it('Fetches an item from an array with a matching value', function (done) {
+
+        var result = util.findBy(arr, 'meat', 'pork');
+        result.should.be.a.Object;
+        result.meat.should.be.a.String;
+        result.meat.should.equal('pork');
+        result.cheese.should.equal(true);
+        done();
+    });
+
+    it('Returns undefined if it can\'t find a matching value', function (done) {
+        var result = util.findBy(arr, 'meat', 'fish');
         (result === undefined).should.be.true;
         done();
     });

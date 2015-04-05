@@ -26,8 +26,34 @@ module.exports = {
      * @return {String|Array|Object} The value of the random index
      */
     getRandomIndex : function (arr) {
-        var index = Math.round(Math.random() * (arr.length - 1))
+        var index = Math.round(Math.random() * (arr.length - 1));
         return arr[index];
+    },
+
+    /**
+     * finds all objects in an array with a top-level property matching a specified value
+     * @param {Array} arr - the haystack
+     * @param {string} field - the name of the property
+     * @param {*} value of the property you wish to find
+     * @returns {*} the needles
+     */
+    filterBy : function (arr, field, value) {
+        var result = arr.filter(function( obj ) {
+            return obj[field] === value;
+        });
+        return result;
+    },
+
+    /**
+     * finds the first object in an array with a top-level property matching a specified value
+     * @param {Array} arr - the haystack
+     * @param {string} field - the name of the property
+     * @param {*} value of the property you wish to find
+     * @returns {*} the needle
+     */
+    findBy : function (arr, field, value) {
+        var result = this.filterBy(arr, field, value);
+        return result[result.length-1];
     }
 
 };
