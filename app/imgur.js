@@ -39,7 +39,6 @@ Imgur.prototype.search = function (query, sort, page) {
             'Authorization'	: 'Client-ID ' + this.apiKey
         }
     };
-
     var callBack = function (error, response, body) {
 
         if (error) {
@@ -53,7 +52,6 @@ Imgur.prototype.search = function (query, sort, page) {
     };
 
     request(options, callBack);
-
     return def.promise();
 };
 
@@ -79,7 +77,6 @@ Imgur.prototype.getRandomFromSearch = function(q, sort, page) {
             } else {
                 def.reject({data:{error: 'no img found', query:q}});
             }
-
         })
         .fail(function(err){
             def.reject(err);
@@ -106,7 +103,6 @@ Imgur.prototype.getAlbum = function(id) {
             'Authorization'	: 'Client-ID ' + this.apiKey
         }
     };
-
     var callBack = function (error, response, body) {
         if (error) {
             def.reject(error);
@@ -115,11 +111,8 @@ Imgur.prototype.getAlbum = function(id) {
         } else {
             def.reject(util.parseJSON(body));
         }
-
     };
-
     request(options, callBack);
-
     return def.promise();
 };
 
@@ -135,20 +128,14 @@ Imgur.prototype.getAlbum = function(id) {
 Imgur.prototype.getRandomFromAlbum = function(albumId) {
 
     var def = $.Deferred();
-    var gifs;
 
     this.getAlbum(albumId)
         .done(function(resp){
-            if (resp.length) {
-                def.resolve(util.getRandomIndex(resp));
-            } else {
-                def.reject({data:{error: 'no gifs found', albumId:albumId}});
-            }
+            def.resolve(util.getRandomIndex(resp));
         })
         .fail(function(err){
             def.reject(err);
         });
-
     return def.promise();
 };
 

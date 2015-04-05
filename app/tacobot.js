@@ -1,6 +1,7 @@
 // Get the response object. Probably subject to change
 var responses = require('./responses'),
-    util = require('./util');
+    util = require('./util'),
+    Imgur = require('./imgur'),
     $ = require('jquery-deferred');
 
 /**
@@ -38,18 +39,17 @@ exports.roomEvent = function (data) {
  */
 exports.message = function (data) {
 
-    var response;
-    var def = $.Deferred();
+    var def;
 	var responseType = exports.getResponseType(data);
 
     switch(responseType) {
         case "gif":
             // asyncreponse here
-            def.resolve({msg:'async response'});
+            def = exports.imgurResponse(data);
             break;
         default:
-            response = exports.buildStaticResponse(data, responseType);
-            def.resolve(response);
+            def = $.Deferred();
+            def.resolve(exports.buildStaticResponse(data, responseType));
             break;
     }
 
@@ -58,31 +58,86 @@ exports.message = function (data) {
 };
 
 /**
- * determines the type of response based on the content of the HipChat Web Hook Object
- * if type can't be determined, returns a random type.
- * @param data
- * @returns {string}
+ * fetches a random GIF from the Imgur tacobot album,
+ * returning a promise that resolves with a response object for HipChat
+ * containing either an img or a message indicating an error
+ * @param {Object} data - a HipChat Web Hook Object
+ * @returns {jquery-deferred}
  */
-exports.getResponseType = function(data) {
-    //todo message parsing
-    return util.getRandomIndex(responses).type;
-    return 'gif';
+exports.imgurResponse = function (data) {
+
+    var def = $.Deferred();
+    var user = data.item.message.from.name;
+    var albumId = 'ABEs0';
+    var imgur = new Imgur('8ff16bbd77e6338');
+    var msg;
+
+    imgur.getRandomFromAlbum(albumId)
+        .done(function(resp){
+            msg = '#taco ' + resp.link;
+            def.resolve(exports.buildResponse(msg, true, 'green'))
+        }).fail(function(resp){
+            msg = 'lo siento... ' + user + '' + resp.data.error;
+            def.resolve(exports.buildResponse(msg, true, 'red'))
+        });
+    return def.promise();
+
 };
 
 /**
- * Creates a Response Object based on the responseType
- * @param  {Object} data Hipchat Web Hook Object
- * @param  {object} response a response object
+ * determines the type of response based on the content of the HipChat Web Hook Object
+ * if type can't be determined, returns a random type.
+ * @param {Object} data - a HipChat Web Hook Object
+ * @returns {String}
+ */
+exports.getResponseType = function(data) {
+    var msg = data.item.message.message.split('/taco').pop().toLowerCase();
+    // probably a smarter way to do this
+    if (msg.indexOf('gif') > -1) {
+        return 'gif';
+    }
+    if (msg.indexOf('pic') > -1) {
+        return 'image';
+    }
+    if (msg.indexOf('image') > -1) {
+        return 'image';
+    }
+    if (msg.indexOf('fact') > -1) {
+        return 'fact';
+    }
+
+    return 'says';
+};
+
+/**
+ * builds a response object to be sent to HipChat
+ * @param {String} message the message you want to appear
+ * @param {Boolean} notify (optional) defaults to true
+ * @param {String} color (optional) defaults to green
+ * @param messageFormat (optional) defaults to text
+ * @returns {Object}
+ */
+exports.buildResponse = function(message, notify, color, messageFormat) {
+    return {
+        color: color || 'green',
+        message_prefix: '',
+        message: message,
+        notify: !!notify,
+        message_format: messageFormat || 'text'
+    };
+};
+
+/**
+ * Creates a Response Object from static content based on the responseType
+ * @param  {Object} data - Hipchat Web Hook Object
+ * @param  {Object} response - a response object
  * @return {Object}	Returns the response to be sent to Hip Chat
  */
 exports.buildStaticResponse = function (data, responseType) {
 
-
-	var message;
-
     // Get user information
     var user = data.item.message.from.name;
-    var response = util.findBy(responses, 'type', responseType) || util.getRandomIndex(responses);
+    var response = util.findBy(responses, 'type', responseType);
     var message = util.getRandomIndex(response.messages);
 
     response = response.response;

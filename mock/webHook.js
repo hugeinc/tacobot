@@ -1,14 +1,14 @@
 module.exports = {
-    getHook : function(message) {
+    getHook : function(message, name, event) {
         return JSON.stringify({
-            "event": "room_message",
+            "event": event || "room_message",
             "item": {
                 "message": {
                     "date": "2015-01-20T22:45:06.662545+00:00",
                     "from": {
                         "id": 1661743,
                         "mention_name": "Blinky",
-                        "name": "Blinky the Three Eyed Fish"
+                        "name": name || "Blinky the Three Eyed Fish"
                     },
                     "id": "00a3eb7f-fac5-496a-8d64-a9050c712ca1",
                     "mentions": [],
