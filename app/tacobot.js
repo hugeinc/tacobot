@@ -66,7 +66,7 @@ exports.message = function (data) {
 exports.getResponseType = function(data) {
     //todo message parsing
     return util.getRandomIndex(responses).type;
-    //return 'gif';
+    return 'gif';
 };
 
 /**
