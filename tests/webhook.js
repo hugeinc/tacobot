@@ -28,7 +28,14 @@ describe('Hip-Chat Webhook', function () {
 		'webhook_id': 578829
 	};
 
-	it('Should respond with a random message', function (done) {
+
+    it('Should be able to determine the type of message based on the HipChat Hook message', function (done){
+
+
+        done();
+    });
+
+	it('Should respond with the correct message type based on HipChat Hook content', function (done) {
 
 		tacobot.roomEvent(fakeWebHook)
             .always(function(resp){
@@ -42,7 +49,6 @@ describe('Hip-Chat Webhook', function () {
                 resp.should.have.property('message').which.is.a.string;
                 resp.should.have.property('notify').which.is.a.boolean;
                 resp.should.have.property('message_format').which.is.a.string;
-
                 done();
 
             });
@@ -51,16 +57,15 @@ describe('Hip-Chat Webhook', function () {
 
 	it('Should return a message type "Says"', function (done) {
 
-		var responseType = responses[0];
+		var responseType = responses[0].type;
+		var response = tacobot.buildStaticResponse(fakeWebHook, responseType);
 
-		var message = tacobot.messageType(fakeWebHook, responseType);
-
-		message.should.be.an.object;
-		message.should.have.property('color').which.is.a.string;
-		message.should.have.property('message_prefix').which.is.a.string;
-		message.should.have.property('message').which.is.a.string;
-		message.should.have.property('notify').which.is.a.boolean;
-		message.should.have.property('message_format').which.is.a.string;		
+		response.should.be.an.object;
+        response.should.have.property('color').which.is.a.string;
+		response.should.have.property('message_prefix').which.is.a.string;
+		response.should.have.property('message').which.is.a.string;
+		response.should.have.property('notify').which.is.a.boolean;
+		response.should.have.property('message_format').which.is.a.string;
 
 		done();
 
@@ -69,9 +74,9 @@ describe('Hip-Chat Webhook', function () {
 
 	it('Should return a message type "Fact"', function (done) {
 
-		var responseType = responses[1];
+		var responseType = responses[1].type;
 
-		var message = tacobot.messageType(fakeWebHook, responseType);
+		var message = tacobot.buildStaticResponse(fakeWebHook, responseType);
 
 		message.should.be.an.object;
 		message.should.have.property('color').which.is.a.string;
@@ -87,9 +92,9 @@ describe('Hip-Chat Webhook', function () {
 
 	it('Should return a message type "Image"', function (done) {
 
-		var responseType = responses[2];
+		var responseType = responses[2].type;
 
-		var message = tacobot.messageType(fakeWebHook, responseType);
+		var message = tacobot.buildStaticResponse(fakeWebHook, responseType);
 
 		message.should.be.an.object;
 		message.should.have.property('color').which.is.a.string;
