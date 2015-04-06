@@ -3,6 +3,8 @@ var should = require('should');
 var tacobot	= require('../app/tacobot');
 var responses = require('../app/responses');
 var mock = require('../mock');
+var sinon = require('sinon');
+var request = require('request');
 
 describe('tacobot Hip-Chat Webhook', function () {
 
@@ -197,18 +199,51 @@ describe('tacobot Hip-Chat Webhook', function () {
             });
     });
 
-	it('Should return an error response if the event type does not match', function (done) {
-		
-		var fakeWebHook = JSON.parse(mock.hipChat.getHook(null, null, 'room_enter'));
+    describe('Error Handling', function () {
 
-		tacobot.roomEvent(fakeWebHook).always(function (resp) {
+        var errMsg = 'Imgur shit the bed. Too many tacos.';
 
-			should.exist(resp.error);
-            resp.error.should.be.a.string;
-			done();
+        beforeEach(function(done){
+            sinon
+                .stub(request, 'get')
+                .yields(new Error(errMsg, null));
+            done();
+        });
 
-		});		
+        afterEach(function(done){
+            request.get.restore();
+            done();
+        });
 
-	});
+        it('Should return an error response if the event type does not match', function (done) {
+
+            var fakeWebHook = JSON.parse(mock.hipChat.getHook(null, null, 'room_enter'));
+            tacobot.roomEvent(fakeWebHook).always(function (resp) {
+                should.exist(resp.error);
+                resp.error.should.be.a.string;
+                done();
+            });
+        });
+
+        it('Should handle service errors from Imgur and still return a response.', function(done){
+            var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco gif me por favor...'));
+            tacobot.roomEvent(fakeWebHook)
+                .always(function(resp){
+
+                    should.exist(resp);
+                    should.not.exist(resp.error);
+
+                    resp.should.be.an.object;
+                    resp.should.have.property('color').which.is.a.string;
+                    resp.color.should.equal('red');
+                    resp.should.have.property('message_prefix').which.is.a.string;
+                    resp.should.have.property('message').which.is.a.string;
+                    resp.should.have.property('notify').which.is.a.boolean;
+                    resp.should.have.property('message_format').which.is.a.string;
+                    done();
+
+                });
+        });
+    });
 
 });

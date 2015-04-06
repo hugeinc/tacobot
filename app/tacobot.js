@@ -44,7 +44,6 @@ exports.message = function (data) {
 
     switch(responseType) {
         case "gif":
-            // asyncreponse here
             def = exports.imgurResponse(data);
             break;
         default:
