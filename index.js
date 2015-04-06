@@ -1,11 +1,11 @@
-var tacobot		= require('./app/tacobot');
-var express 	= require('express');
-	bodyParser 	= require('body-parser'),
+var tacobot     = require('./app/tacobot'),
+    express     = require('express'),
+    bodyParser  = require('body-parser'),
     path        = require('path'),
-    app 		= express();
+    app         = express();
 
 app.use(bodyParser.urlencoded({
-	extended: true
+    extended: true
 }));
 
 app.use(bodyParser.json());
@@ -14,12 +14,11 @@ app.use(bodyParser.json());
 app.use('/test-coverage', express.static(path.join(__dirname , 'test-coverage')));
 
 app.get('/', function (req, res) {
-	res.end('taco!');
+    res.end('taco!');
 });
 
 app.post('/', function (req, res) {
-
-	tacobot.roomEvent(req.body).always(function(message){
+    tacobot.roomEvent(req.body).always(function(message){
         res.json(message);
     });
 });

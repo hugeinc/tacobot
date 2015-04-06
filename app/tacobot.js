@@ -1,4 +1,3 @@
-// Get the response object. Probably subject to change
 var responses = require('./responses'),
     util = require('./util'),
     Imgur = require('./imgur'),
@@ -15,17 +14,17 @@ exports.roomEvent = function (data) {
 
     var def = $.Deferred();
 
-	switch (data.event) {
-		case 'room_message':
-			def = exports.message(data);
-		break;
+    switch (data.event) {
+        case 'room_message':
+            def = exports.message(data);
+        break;
         default:
-			def.reject({
+            def.reject({
                error : 'tacobot doesn\'t currently support event: '
                 + data.event + '. Lo siento.'
             });
             break;
-	}
+    }
 
     return def.promise();
 
@@ -40,7 +39,7 @@ exports.roomEvent = function (data) {
 exports.message = function (data) {
 
     var def;
-	var responseType = exports.getResponseType(data);
+    var responseType = exports.getResponseType(data);
 
     switch(responseType) {
         case "gif":
@@ -141,19 +140,20 @@ exports.buildStaticResponse = function (data, responseType) {
 
     response = response.response;
 
-	// Take action based on random message type
-	switch (responseType) {
-		case 'says':
-			response.message = user + ' ' + message;
-			break;
-		case 'fact':
-            response.message = response.message_prefix + ' ' + message;
-			break;
-		case 'image':
-            response.message = '#taco ' + message;
-			break;
-	}
+    // Take action based on message type
+    switch (responseType) {
 
-	return response;
+        case 'fact':
+            response.message = response.message_prefix + ' ' + message;
+            break;
+        case 'image':
+            response.message = '#taco ' + message;
+            break;
+        default:
+            response.message = user + ' ' + message;
+            break;
+    }
+
+    return response;
 
 };
