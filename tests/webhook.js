@@ -115,118 +115,11 @@ describe('tacobot Hip-Chat Webhook', function () {
         });
     })
 
+    describe('Static content responses', function(){
 
-	it('Should respond with a message type "Says" by default', function (done) {
-        //todo build one of these for each type
-        var fakeWebHook = JSON.parse(mock.hipChat.getHook());
-        tacobot.roomEvent(fakeWebHook)
-            .always(function(resp){
+        it('Should respond with a message type "Says" by default', function (done) {
 
-                should.exist(resp);
-                should.not.exist(resp.error);
-
-                resp.should.be.an.object;
-                resp.should.have.property('color').which.is.a.string;
-                resp.should.have.property('message_prefix').which.is.a.string;
-                resp.should.have.property('message').which.is.a.string;
-                resp.should.have.property('notify').which.is.a.boolean;
-                resp.should.have.property('message_format').which.is.a.string;
-                done();
-
-            });
-
-	});
-
-
-    it('Should return a message type "Fact" for "/taco *fact*"', function (done) {
-        // /taco gif
-        var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco fact?'));
-        tacobot.roomEvent(fakeWebHook)
-            .always(function(resp){
-
-                should.exist(resp);
-                should.not.exist(resp.error);
-
-                resp.should.be.an.object;
-                resp.should.have.property('color').which.is.a.string;
-                resp.should.have.property('message_prefix').which.is.a.string;
-                resp.should.have.property('message').which.is.a.string;
-                resp.should.have.property('notify').which.is.a.boolean;
-                resp.should.have.property('message_format').which.is.a.string;
-                done();
-
-            });
-
-    });
-
-    it('Should return a message type "Image" for "/taco *pic*"', function (done) {
-        var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco pics or it did\'t happen.'));
-        tacobot.roomEvent(fakeWebHook)
-            .always(function(resp){
-
-                should.exist(resp);
-                should.not.exist(resp.error);
-
-                resp.should.be.an.object;
-                resp.should.have.property('color').which.is.a.string;
-                resp.should.have.property('message_prefix').which.is.a.string;
-                resp.should.have.property('message').which.is.a.string;
-                resp.should.have.property('notify').which.is.a.boolean;
-                resp.should.have.property('message_format').which.is.a.string;
-                done();
-
-            });
-
-    });
-
-    it('Should return a message type "Gif" for "/taco *gif*"', function (done) {
-
-        var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco gif me por favor...'));
-        tacobot.roomEvent(fakeWebHook)
-            .always(function(resp){
-
-                should.exist(resp);
-                should.not.exist(resp.error);
-
-                resp.should.be.an.object;
-                resp.should.have.property('color').which.is.a.string;
-                resp.should.have.property('message_prefix').which.is.a.string;
-                resp.should.have.property('message').which.is.a.string;
-                resp.should.have.property('notify').which.is.a.boolean;
-                resp.should.have.property('message_format').which.is.a.string;
-                done();
-
-            });
-    });
-
-    describe('Error Handling', function () {
-
-        var errMsg = 'Imgur shit the bed. Too many tacos.';
-
-        beforeEach(function(done){
-            sinon
-                .stub(request, 'get')
-                .yields(new Error(errMsg, null));
-            done();
-        });
-
-        afterEach(function(done){
-            request.get.restore();
-            done();
-        });
-
-        it('Should return an error response if the event type does not match', function (done) {
-
-            var fakeWebHook = JSON.parse(mock.hipChat.getHook(null, null, 'room_enter'));
-            tacobot.roomEvent(fakeWebHook).always(function (resp) {
-                should.exist(resp.error);
-                resp.error.should.be.a.string;
-                done();
-            });
-        });
-
-        it('Should handle service errors from Imgur and still return a response.', function(done){
-            var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco gif me por favor...'));
+            var fakeWebHook = JSON.parse(mock.hipChat.getHook());
             tacobot.roomEvent(fakeWebHook)
                 .always(function(resp){
 
@@ -235,7 +128,41 @@ describe('tacobot Hip-Chat Webhook', function () {
 
                     resp.should.be.an.object;
                     resp.should.have.property('color').which.is.a.string;
-                    resp.color.should.equal('red');
+                    resp.should.have.property('message_prefix').which.is.a.string;
+                    resp.should.have.property('message').which.is.a.string;
+                    resp.should.have.property('notify').which.is.a.boolean;
+                    resp.should.have.property('message_format').which.is.a.string;
+                    done();
+                });
+
+        });
+
+
+        it('Should return a message type "Fact" for "/taco *fact*"', function (done) {
+            // /taco gif
+            var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco fact?'));
+            tacobot.roomEvent(fakeWebHook)
+                .always(function(resp){
+                    should.exist(resp);
+                    should.not.exist(resp.error);
+                    resp.should.be.an.object;
+                    resp.should.have.property('color').which.is.a.string;
+                    resp.should.have.property('message_prefix').which.is.a.string;
+                    resp.should.have.property('message').which.is.a.string;
+                    resp.should.have.property('notify').which.is.a.boolean;
+                    resp.should.have.property('message_format').which.is.a.string;
+                    done();
+                });
+        });
+
+        it('Should return a message type "Image" for "/taco *pic*"', function (done) {
+            var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco pics or it did\'t happen.'));
+            tacobot.roomEvent(fakeWebHook)
+                .always(function(resp){
+                    should.exist(resp);
+                    should.not.exist(resp.error);
+                    resp.should.be.an.object;
+                    resp.should.have.property('color').which.is.a.string;
                     resp.should.have.property('message_prefix').which.is.a.string;
                     resp.should.have.property('message').which.is.a.string;
                     resp.should.have.property('notify').which.is.a.boolean;
@@ -243,6 +170,83 @@ describe('tacobot Hip-Chat Webhook', function () {
                     done();
 
                 });
+
+        });
+    });
+
+
+    describe('Async Imgur API response', function(){
+        before(function(done){
+            sinon
+                .stub(request, 'get')
+                .yields(null, {statusCode:200}, mock.imgur.album);
+            done();
+        });
+
+        after(function(done){
+            request.get.restore();
+            done();
+        });
+
+        it('Should return a message type "Gif" for "/taco *gif*"', function (done) {
+            var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco gif me por favor...'));
+            tacobot.roomEvent(fakeWebHook)
+                .always(function(resp){
+                    should.exist(resp);
+                    should.not.exist(resp.error);
+                    resp.should.be.an.object;
+                    resp.should.have.property('color').which.is.a.string;
+                    resp.should.have.property('message_prefix').which.is.a.string;
+                    resp.should.have.property('message').which.is.a.string;
+                    resp.should.have.property('notify').which.is.a.boolean;
+                    resp.should.have.property('message_format').which.is.a.string;
+                    done();
+                });
+        });
+    });
+
+    describe('Async Imgur API Error handling', function(){
+        var errMsg = 'Imgur shit the bed. Too many tacos.';
+
+        before(function(done){
+            sinon
+                .stub(request, 'get')
+                .yields(new Error(errMsg, null));
+            done();
+        });
+
+        after(function(done){
+            request.get.restore();
+            done();
+        });
+
+        it('Should handle service errors from Imgur and still return a response.', function(done){
+            var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco gif me por favor...'));
+            tacobot.roomEvent(fakeWebHook)
+                .always(function(resp){
+                    should.exist(resp);
+                    should.not.exist(resp.error);
+                    resp.should.be.an.object;
+                    resp.should.have.property('color').which.is.a.string;
+                    resp.color.should.equal('red');
+                    resp.should.have.property('message_prefix').which.is.a.string;
+                    resp.should.have.property('message').which.is.a.string;
+                    resp.should.have.property('notify').which.is.a.boolean;
+                    resp.should.have.property('message_format').which.is.a.string;
+                    done();
+                });
+        });
+    });
+
+    describe('Error Handling', function () {
+
+        it('Should return an error response if the event type does not match', function (done) {
+            var fakeWebHook = JSON.parse(mock.hipChat.getHook(null, null, 'room_enter'));
+            tacobot.roomEvent(fakeWebHook).always(function (resp) {
+                should.exist(resp.error);
+                resp.error.should.be.a.string;
+                done();
+            });
         });
     });
 

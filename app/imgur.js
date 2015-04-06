@@ -107,7 +107,7 @@ Imgur.prototype.getAlbum = function(id) {
         if (error) {
             def.reject({data:{error:error.message}});
         } else if (response.statusCode == 200) {
-           def.resolve( _this.parseResp(body));
+            def.resolve(_this.parseResp(body));
         } else {
             def.reject(util.parseJSON(body));
         }
