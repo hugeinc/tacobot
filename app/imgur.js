@@ -42,7 +42,7 @@ Imgur.prototype.search = function (query, sort, page) {
     var callBack = function (error, response, body) {
 
         if (error) {
-            def.reject(error);
+            def.reject({data:{error: error.message, query:query}});
         } else if (response.statusCode == 200) {
             def.resolve(_this.parseResp(body));
         } else {
@@ -51,7 +51,7 @@ Imgur.prototype.search = function (query, sort, page) {
 
     };
 
-    request(options, callBack);
+    request.get(options, callBack);
     return def.promise();
 };
 
@@ -78,8 +78,8 @@ Imgur.prototype.getRandomFromSearch = function(q, sort, page) {
                 def.reject({data:{error: 'no img found', query:q}});
             }
         })
-        .fail(function(err){
-            def.reject(err);
+        .fail(function(error){
+            def.reject(error);
         });
     return def.promise();
 };
@@ -105,14 +105,14 @@ Imgur.prototype.getAlbum = function(id) {
     };
     var callBack = function (error, response, body) {
         if (error) {
-            def.reject(error);
+            def.reject({data:{error:error.message}});
         } else if (response.statusCode == 200) {
            def.resolve( _this.parseResp(body));
         } else {
             def.reject(util.parseJSON(body));
         }
     };
-    request(options, callBack);
+    request.get(options, callBack);
     return def.promise();
 };
 

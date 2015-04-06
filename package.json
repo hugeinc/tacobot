@@ -24,7 +24,7 @@
     "istanbul": "^0.3.6",
     "mocha": "^2.1.0",
     "should": "^5.0.1",
-    "sinon": "^1.12.2",
+    "sinon": "^1.14.1",
     "supertest": "^0.15.0"
   },
   "dependencies": {

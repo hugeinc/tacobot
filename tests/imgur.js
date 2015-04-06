@@ -1,13 +1,21 @@
 var should = require('should');
-var request = require('supertest');
-
+var sinon = require('sinon');
+var request = require('request');
 var Imgur = require('../app/imgur');
 var mock = require('../mock');
+
 var key = '8ff16bbd77e6338';
 var albumId = 'ABEs0';
 
-
 describe('Imgur response parsing', function () {
+
+    beforeEach(function(done) {
+        done();
+    });
+
+    afterEach(function(done) {
+        done();
+    });
 
     it('Should be able to parse an Imgur gallery response to an array of GIFs', function(done) {
         var imgur = new Imgur();
@@ -32,6 +40,76 @@ describe('Imgur response parsing', function () {
         parsed.length.should.equal(0);
         return done();
     });
+});
+
+describe('Imgur service helper error handling', function(){
+
+    beforeEach(function(done) {
+        done();
+    });
+
+    afterEach(function(done) {
+        done();
+    });
+
+    it('Handles an invalid API Key from Imgur on the album endpoint', function(done){
+        var imgur = new Imgur('invalid-key');
+        imgur.getRandomFromAlbum(albumId).always(function(resp){
+            resp.data.should.be.a.Object;
+            resp.data.error.should.be.a.String;
+            resp.data.error.should.equal('Invalid client_id');
+            done();
+        });
+    });
+
+    it('Handles an invalid API Key from Imgur on the search endpoint', function(done){
+        var imgur = new Imgur('invalid-key');
+        imgur.getRandomFromSearch('tacos+ext:gif').always(function(resp){
+            resp.data.should.be.a.Object;
+            resp.data.error.should.be.a.String;
+            resp.data.error.should.equal('Invalid client_id');
+            done();
+        });
+    });
+
+});
+
+describe('Imgur http helper error handling', function(){
+
+    var errMsg = 'Imgur shit the bed. Too many tacos.';
+
+    beforeEach(function(done){
+        sinon
+            .stub(request, 'get')
+            .yields(new Error(errMsg, null));
+        done();
+    });
+
+    afterEach(function(done){
+        request.get.restore();
+        done();
+    });
+
+    it('Handles an http error when fetching from an Imgur album', function(done){
+        var imgur = new Imgur(key);
+        imgur.getRandomFromAlbum(albumId).always(function(resp){
+            resp.data.should.be.a.Object;
+            resp.data.error.should.be.a.String;
+            resp.data.error.should.equal(errMsg);
+            done();
+        });
+    });
+
+    it('Handles an http error when searching Imgur', function(done){
+        var imgur = new Imgur(key);
+        imgur.getRandomFromSearch('tacos+ext:gif').always(function(resp){
+            resp.data.should.be.a.Object;
+            resp.data.error.should.be.a.String;
+            resp.data.error.should.equal(errMsg);
+            done();
+        });
+    });
+
 });
 
 describe('Imgur service helper', function(){
@@ -117,8 +195,5 @@ describe('Imgur service helper', function(){
             done();
         });
     });
-
-
-
 
 });
