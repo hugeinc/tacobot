@@ -2,7 +2,7 @@ var should = require('should');
 var sinon = require('sinon');
 var request = require('request');
 var Imgur = require('../app/imgur');
-var mock = require('../mock');
+var mock = require('./mock');
 
 var albumId = 'ABEs0';
 

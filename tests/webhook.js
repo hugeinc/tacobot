@@ -2,7 +2,7 @@ var should = require('should');
 
 var tacobot	= require('../app/tacobot');
 var responses = require('../app/responses');
-var mock = require('../mock');
+var mock = require('./mock');
 var sinon = require('sinon');
 var request = require('request');
 
