@@ -9,6 +9,9 @@ var util = require('./util');
  * @see {@link https://api.imgur.com/oauth2/addclient}
  * @see {@link https://api.imgur.com/models/image}
  * @see {@link https://api.imgur.com/models/album}
+ * NOTE: This module uses a Node port of JQuery's Promise implementation.
+ * @typedef {$.Deferred()} JqueryDeferred
+ * @see {@link https://github.com/zzdhidden/node-jquery-deferred}
  * @param {string} apiKey - your app's Imgur Client ID
  * @constructor
  */
@@ -25,7 +28,7 @@ function Imgur (apiKey) {
  * @param {String} query - what you're searching for, append "+ext:gif" for Gifs!
  * @param {String} sort - optional, defaults to "top"
  * @param {Number} page - optional, defaults to 0
- * @returns {jquery-deferred}
+ * @returns {JqueryDeferred}
  */
 Imgur.prototype.search = function (query, sort, page) {
 
@@ -66,7 +69,7 @@ Imgur.prototype.search = function (query, sort, page) {
  * @param {string} query  - what you're searching for, append "+ext:gif" for Gifs!
  * @param {String} sort - optional, defaults to "top"
  * @param {Number} page - optional, defaults to 0
- * @returns {jquery-deferred}
+ * @returns {JqueryDeferred}
  */
 Imgur.prototype.getRandomFromSearch = function(query, sort, page) {
 
@@ -93,7 +96,7 @@ Imgur.prototype.getRandomFromSearch = function(query, sort, page) {
  * @see {@link https://api.imgur.com/models/image}
  * @see {@link https://api.imgur.com/models/album}
  * @param {String} id - the album id
- * @returns {jquery-deferred}
+ * @returns {JqueryDeferred}
  */
 Imgur.prototype.getAlbum = function(id) {
 
@@ -125,7 +128,7 @@ Imgur.prototype.getAlbum = function(id) {
  * @see {@link https://api.imgur.com/models/image}
  * @see {@link https://api.imgur.com/models/album}
  * @param {String} albumId - the id of the album
- * @returns {jquery-deferred}
+ * @returns {JqueryDeferred}
  */
 Imgur.prototype.getRandomFromAlbum = function(albumId) {
 

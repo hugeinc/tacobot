@@ -10,7 +10,7 @@ var responses = require('./responses'),
  * Promise rejects with an error response for HipChat.
  * @see {@link https://www.hipchat.com/docs/apiv2/webhooks}
  * @param {Object} data - HipChat WebHook data
- * @returns {jquery-deferred}
+ * @returns {JqueryDeferred}
  *
  */
 exports.roomEvent = function (data) {
@@ -38,7 +38,7 @@ exports.roomEvent = function (data) {
  * Promise resolves with a response object for HipChat.
  * Promise rejects with an error response for HipChat.
  * @param  {Object} data - HipChat WebHook Object
- * @returns {jquery-deferred}
+ * @returns {JqueryDeferred}
  */
 exports.message = function (data) {
 
@@ -64,7 +64,7 @@ exports.message = function (data) {
  * Promise resolves with a response object for HipChat.
  * Promise rejects with an error response for HipChat.
  * @param {Object} data - a HipChat Web Hook Object
- * @returns {jquery-deferred}
+ * @returns {JqueryDeferred}
  */
 exports.imgurResponse = function (data) {
 
