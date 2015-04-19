@@ -3,11 +3,13 @@ var $ = require('jquery-deferred');
 var util = require('./util');
 
 /**
- * a simple module for searching Imgur.com for images
+ * A simple module for searching Imgur.com for images,
  * or fetching the images from a public album.
- * see https://api.imgur.com/models/image
- * see https://api.imgur.com/models/album
- * @param {string} apiKey, your app's Imgur API key
+ * Requires an Imgur.com API Client ID.
+ * @see {@link https://api.imgur.com/oauth2/addclient}
+ * @see {@link https://api.imgur.com/models/image}
+ * @see {@link https://api.imgur.com/models/album}
+ * @param {string} apiKey - your app's Imgur Client ID
  * @constructor
  */
 function Imgur (apiKey) {
@@ -15,14 +17,14 @@ function Imgur (apiKey) {
 }
 
 /**
- * see https://api.imgur.com/models/image
  * Searches Imgur.com for images returning a promise.
- * The promise resolves with an array of objects
+ * The promise resolves with an array of objects.
  * If no images are found, promise resolves with an empty array.
  * Promise rejects only on service error.
- * @param {string} query (append "+ext:gif" for Gifs!)
- * @param {string}_ sort (optional) defaults to top
- * @param {number} page (optional) defaults to 0
+ * @see {@link https://api.imgur.com/models/image}
+ * @param {String} query - what you're searching for, append "+ext:gif" for Gifs!
+ * @param {String} sort - optional, defaults to "top"
+ * @param {Number} page - optional, defaults to 0
  * @returns {jquery-deferred}
  */
 Imgur.prototype.search = function (query, sort, page) {
@@ -56,26 +58,26 @@ Imgur.prototype.search = function (query, sort, page) {
 };
 
 /**
- * see https://api.imgur.com/models/image
- * searches Imgur.com and returning a promise.
- * Promise resolves with a single, randomly selected image model from the search results
+ * Searches Imgur.com and returning a promise.
+ * Promise resolves with a single, randomly selected image model from the search results.
  * Unlike Imgur.search, the promise rejects if no results are found.
  * Similar to Imgur.search, the promise rejects on service error.
- * @param {string} query (append "+ext:gif" for Gifs!)
- * @param {string}_ sort (optional) defaults to top
- * @param {number} page (optional) defaults to 0
+ * @see {@link https://api.imgur.com/models/image}
+ * @param {string} query  - what you're searching for, append "+ext:gif" for Gifs!
+ * @param {String} sort - optional, defaults to "top"
+ * @param {Number} page - optional, defaults to 0
  * @returns {jquery-deferred}
  */
-Imgur.prototype.getRandomFromSearch = function(q, sort, page) {
+Imgur.prototype.getRandomFromSearch = function(query, sort, page) {
 
     var def = $.Deferred();
 
-    this.search(q, sort, page)
+    this.search(query, sort, page)
         .done(function(resp){
             if (resp.length) {
                 def.resolve(util.getRandomIndex(resp));
             } else {
-                def.reject({data:{error: 'no img found', query:q}});
+                def.reject({data: {error: 'no img found', query: query}});
             }
         })
         .fail(function(error){
@@ -85,12 +87,12 @@ Imgur.prototype.getRandomFromSearch = function(q, sort, page) {
 };
 
 /**
- * see https://api.imgur.com/models/image
- * see https://api.imgur.com/models/album
  * Gets the images in an album from Imgur.com, returning a promise.
  * The promise resolves with an array of image models.
  * Promise rejects on service error or if no images are found.
- * @param {string}_ id - the album id
+ * @see {@link https://api.imgur.com/models/image}
+ * @see {@link https://api.imgur.com/models/album}
+ * @param {String} id - the album id
  * @returns {jquery-deferred}
  */
 Imgur.prototype.getAlbum = function(id) {
@@ -100,7 +102,7 @@ Imgur.prototype.getAlbum = function(id) {
     var options = {
         uri : 'https://api.imgur.com/3/album/' + id + '/images',
         headers : {
-            'Authorization'	: 'Client-ID ' + this.apiKey
+            'Authorization': 'Client-ID ' + this.apiKey
         }
     };
     var callBack = function (error, response, body) {
@@ -117,12 +119,12 @@ Imgur.prototype.getAlbum = function(id) {
 };
 
 /**
- * see https://api.imgur.com/models/image
- * see https://api.imgur.com/models/album
- * Returns a single, randomly selected image model from an album on Imgur.com
+ * Returns a single, randomly selected image model from an Imgur.com album.
  * The promise resolves with a single, randomly selected image model from an album.
- * The promise rejects on service error or if the album isn't found.
- * @param {string}_ id - the id of the album
+ * The promise rejects on service error or if the album isn't found
+ * @see {@link https://api.imgur.com/models/image}
+ * @see {@link https://api.imgur.com/models/album}
+ * @param {String} albumId - the id of the album
  * @returns {jquery-deferred}
  */
 Imgur.prototype.getRandomFromAlbum = function(albumId) {
@@ -140,11 +142,11 @@ Imgur.prototype.getRandomFromAlbum = function(albumId) {
 };
 
 /**
- * safely parses a raw JSON response from the Imgur API,
- * into an array of image models (see see https://api.imgur.com/models/image)
+ * Safely parses a raw JSON response from the Imgur API into an array of image models.
  * Array is empty if none are found or data is malformed.
- * @param {string} data
- * @returns {array}
+ * @see {@link https://api.imgur.com/models/image}
+ * @param {String} data - the raw json response from Imgur
+ * @returns {Array} - an array of parsed Imgur images
  */
 Imgur.prototype.parseResp = function (data) {
     var json = util.parseJSON(data);
