@@ -38,16 +38,16 @@ Imgur.prototype.search = function (query, sort, page) {
     var sort = sort || 'top';
 
     var options = {
-        uri : 'https://api.imgur.com/3/gallery/search/'
+        uri: 'https://api.imgur.com/3/gallery/search/'
                 + sort + '/' + page + '/?q=' + query,
         headers : {
-            'Authorization'	: 'Client-ID ' + this.apiKey
+            'Authorization': 'Client-ID ' + this.apiKey
         }
     };
     var callBack = function (error, response, body) {
 
         if (error) {
-            def.reject({data:{error: error.message, query:query}});
+            def.reject({data: {error: error.message, query: query}});
         } else if (response.statusCode == 200) {
             def.resolve(_this.parseResp(body));
         } else {
@@ -71,7 +71,7 @@ Imgur.prototype.search = function (query, sort, page) {
  * @param {Number} page - optional, defaults to 0
  * @returns {JqueryDeferred}
  */
-Imgur.prototype.getRandomFromSearch = function(query, sort, page) {
+Imgur.prototype.getRandomFromSearch = function (query, sort, page) {
 
     var def = $.Deferred();
 
@@ -83,7 +83,7 @@ Imgur.prototype.getRandomFromSearch = function(query, sort, page) {
                 def.reject({data: {error: 'no img found', query: query}});
             }
         })
-        .fail(function(error){
+        .fail(function (error) {
             def.reject(error);
         });
     return def.promise();
@@ -98,7 +98,7 @@ Imgur.prototype.getRandomFromSearch = function(query, sort, page) {
  * @param {String} id - the album id
  * @returns {JqueryDeferred}
  */
-Imgur.prototype.getAlbum = function(id) {
+Imgur.prototype.getAlbum = function (id) {
 
     var _this = this;
     var def = $.Deferred();
@@ -110,7 +110,7 @@ Imgur.prototype.getAlbum = function(id) {
     };
     var callBack = function (error, response, body) {
         if (error) {
-            def.reject({data:{error:error.message}});
+            def.reject({data: {error: error.message}});
         } else if (response.statusCode == 200) {
             def.resolve(_this.parseResp(body));
         } else {
@@ -130,15 +130,15 @@ Imgur.prototype.getAlbum = function(id) {
  * @param {String} albumId - the id of the album
  * @returns {JqueryDeferred}
  */
-Imgur.prototype.getRandomFromAlbum = function(albumId) {
+Imgur.prototype.getRandomFromAlbum = function (albumId) {
 
     var def = $.Deferred();
 
     this.getAlbum(albumId)
-        .done(function(resp){
+        .done(function (resp) {
             def.resolve(util.getRandomIndex(resp));
         })
-        .fail(function(err){
+        .fail(function (err) {
             def.reject(err);
         });
     return def.promise();

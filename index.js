@@ -22,9 +22,10 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', function (req, res) {
-    tacobot.roomEvent(req.body).always(function(message){
-        res.json(message);
-    });
+    tacobot.roomEvent(req.body)
+        .always(function (message) {
+            res.json(message);
+        });
 });
 
 app.listen(8000);

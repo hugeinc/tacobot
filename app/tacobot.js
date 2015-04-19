@@ -20,7 +20,7 @@ exports.roomEvent = function (data) {
     switch (data.event) {
         case 'room_message':
             def = exports.message(data);
-        break;
+            break;
         default:
             def.reject({
                error : 'tacobot doesn\'t currently support event: '
@@ -46,7 +46,7 @@ exports.message = function (data) {
     var responseType = exports.getResponseType(data);
 
     switch(responseType) {
-        case "gif":
+        case 'gif':
             def = exports.imgurResponse(data);
             break;
         default:
@@ -76,10 +76,10 @@ exports.imgurResponse = function (data) {
     var msg;
 
     imgur.getRandomFromAlbum(albumId)
-        .done(function(resp){
+        .done(function (resp) {
             msg = '#taco ' + resp.link;
             def.resolve(exports.buildResponse(msg, true, 'green'))
-        }).fail(function(resp){
+        }).fail(function (resp) {
             msg = 'lo siento... ' + user + '. ' + resp.data.error;
             def.resolve(exports.buildResponse(msg, true, 'red'))
         });
@@ -93,7 +93,7 @@ exports.imgurResponse = function (data) {
  * @param {Object} data - a HipChat WebHook Object
  * @returns {String}
  */
-exports.getResponseType = function(data) {
+exports.getResponseType = function (data) {
     var msg = data.item.message.message.split('/taco').pop().toLowerCase();
     // probably a smarter way to do this
     if (msg.indexOf('gif') > -1) {
@@ -120,7 +120,7 @@ exports.getResponseType = function(data) {
  * @param {String} messageFormat - optional, defaults to "text"
  * @returns {Object} a response to be sent to HipChat
  */
-exports.buildResponse = function(message, notify, color, messageFormat) {
+exports.buildResponse = function (message, notify, color, messageFormat) {
     return {
         color: color || 'green',
         message_prefix: '',
