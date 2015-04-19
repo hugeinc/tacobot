@@ -2,32 +2,32 @@ var util = require('../app/util');
 var should = require('should');
 
 var arr = [
-    {meat : 'chicken', cheese:true},
-    {meat : 'steak', cheese:true},
-    {meat : 'barbacoa', cheese:false},
-    {meat : 'pork', cheese:true},
-    {meat : 'cessina', cheese: false}
+    {meat: 'chicken', cheese: true},
+    {meat: 'steak', cheese: true},
+    {meat: 'barbacoa', cheese: false},
+    {meat: 'pork', cheese: true},
+    {meat: 'cessina', cheese: false}
 ];
 
-describe('util taco helpers', function (){
+describe('util taco helpers', function () {
 
-    describe('util.parseJSON', function() {
-        it('Parses good JSON', function(done) {
-            var result = util.parseJSON(JSON.stringify({message:'hey, this is some good JSON.'}));
+    describe('util.parseJSON', function () {
+        it('Parses good JSON', function (done) {
+            var result = util.parseJSON(JSON.stringify({message: 'hey, this is some good JSON.'}));
             result.should.be.a.Object;
             result.message.should.be.a.String;
             result.message.should.equal('hey, this is some good JSON.');
             done();
         });
 
-        it('Handles null by returning an error object', function(done) {
+        it('Handles null by returning an error object', function (done) {
             var result = util.parseJSON(null);
             result.should.be.a.Object;
             result.error.should.be.a.Error;
             done();
         });
 
-        it('Handles bad JSON by returning an error object', function(done) {
+        it('Handles bad JSON by returning an error object', function (done) {
             var result = util.parseJSON('{bad json...');
             result.should.be.a.Object;
             result.error.should.be.a.Error;
@@ -35,7 +35,7 @@ describe('util taco helpers', function (){
         });
     });
 
-    describe('util.getRandomIndex', function(){
+    describe('util.getRandomIndex', function () {
 
         it('Fetches a random item from an array', function (done) {
             var result = util.getRandomIndex(arr);
@@ -52,7 +52,7 @@ describe('util taco helpers', function (){
     });
 
 
-    describe('util.filterBy', function(){
+    describe('util.filterBy', function () {
 
         it('Fetches an items from an array with a matching value', function (done) {
 
@@ -70,7 +70,7 @@ describe('util taco helpers', function (){
         });
     });
 
-    describe('util.findBy', function(){
+    describe('util.findBy', function () {
 
         it('Fetches an item from an array with a matching value', function (done) {
 
