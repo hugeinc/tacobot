@@ -1,6 +1,7 @@
 var responses = require('./responses'),
     util = require('./util'),
     Imgur = require('./imgur'),
+    nconf = require('nconf'),
     $ = require('jquery-deferred');
 
 /**
@@ -66,8 +67,9 @@ exports.imgurResponse = function (data) {
 
     var def = $.Deferred();
     var user = data.item.message.from.name;
-    var albumId = 'ABEs0';
-    var imgur = new Imgur('8ff16bbd77e6338');
+    var albumId = nconf.get('IMGUR:ALBUM_ID');
+    var apiKey = nconf.get('IMGUR:API_KEY');
+    var imgur = new Imgur(apiKey);
     var msg;
 
     imgur.getRandomFromAlbum(albumId)

@@ -2,7 +2,11 @@ var tacobot     = require('./app/tacobot'),
     express     = require('express'),
     bodyParser  = require('body-parser'),
     path        = require('path'),
+    nconf       = require('nconf'),
     app         = express();
+
+nconf.argv().env();
+nconf.file({file: 'config.json'});
 
 app.use(bodyParser.urlencoded({
     extended: true
