@@ -5,10 +5,12 @@ var responses = require('./responses'),
     $ = require('jquery-deferred');
 
 /**
- * Takes action on various room events. See
- * https://www.hipchat.com/docs/apiv2/webhooks for more information
- * @param  {Object}   data Hipchat Web Hook Object
- * @return {jquery-deferred} Resolves with response to be sent to Hip Chat, rejects with an error message
+ * Takes action on various room events, returning a promise.
+ * Promise resolves with a response object for HipChat.
+ * Promise rejects with an error response for HipChat.
+ * @see {@link https://www.hipchat.com/docs/apiv2/webhooks}
+ * @param {Object} data - HipChat WebHook data
+ * @returns {jquery-deferred}
  *
  */
 exports.roomEvent = function (data) {
@@ -32,10 +34,11 @@ exports.roomEvent = function (data) {
 };
 
 /**
- * Generates a response based on Web Hook data and returns a promise.
- * Promise resolves with the content of the response to be sent to HipChat
- * @param  {Object}   data Hipchat Web Hook Object
- * @return {jquery-deferred} Resolves with response to be sent to Hip Chat, rejects with an error message
+ * Generates a response based on HipChat WebHook data, returning a promise.
+ * Promise resolves with a response object for HipChat.
+ * Promise rejects with an error response for HipChat.
+ * @param  {Object} data - HipChat WebHook Object
+ * @returns {jquery-deferred}
  */
 exports.message = function (data) {
 
@@ -57,9 +60,9 @@ exports.message = function (data) {
 };
 
 /**
- * fetches a random GIF from the Imgur tacobot album,
- * returning a promise that resolves with a response object for HipChat
- * containing either an img or a message indicating an error
+ * Fetches a random GIF from the Imgur TacoBot album, returning a promise.
+ * Promise resolves with a response object for HipChat.
+ * Promise rejects with an error response for HipChat.
  * @param {Object} data - a HipChat Web Hook Object
  * @returns {jquery-deferred}
  */
@@ -77,7 +80,7 @@ exports.imgurResponse = function (data) {
             msg = '#taco ' + resp.link;
             def.resolve(exports.buildResponse(msg, true, 'green'))
         }).fail(function(resp){
-            msg = 'lo siento... ' + user + '' + resp.data.error;
+            msg = 'lo siento... ' + user + '. ' + resp.data.error;
             def.resolve(exports.buildResponse(msg, true, 'red'))
         });
     return def.promise();
@@ -85,9 +88,9 @@ exports.imgurResponse = function (data) {
 };
 
 /**
- * determines the type of response based on the content of the HipChat Web Hook Object
- * if type can't be determined, returns a random type.
- * @param {Object} data - a HipChat Web Hook Object
+ * Determines the type of response based on the content of the HipChat WebHook Object.
+ * If type can't be determined, returns type "says".
+ * @param {Object} data - a HipChat WebHook Object
  * @returns {String}
  */
 exports.getResponseType = function(data) {
@@ -110,12 +113,12 @@ exports.getResponseType = function(data) {
 };
 
 /**
- * builds a response object to be sent to HipChat
- * @param {String} message the message you want to appear
- * @param {Boolean} notify (optional) defaults to true
- * @param {String} color (optional) defaults to green
- * @param messageFormat (optional) defaults to text
- * @returns {Object}
+ * Builds a response object to be sent to HipChat.
+ * @param {String} message - the message you want to appear
+ * @param {Boolean} notify - optional, defaults to true
+ * @param {String} color - optional, defaults to "green"
+ * @param {String} messageFormat - optional, defaults to "text"
+ * @returns {Object} a response to be sent to HipChat
  */
 exports.buildResponse = function(message, notify, color, messageFormat) {
     return {
@@ -128,10 +131,10 @@ exports.buildResponse = function(message, notify, color, messageFormat) {
 };
 
 /**
- * Creates a Response Object from static content based on the responseType
+ * Creates a Response Object from static content based on the responseType.
  * @param  {Object} data - Hipchat Web Hook Object
- * @param  {Object} response - a response object
- * @return {Object}	Returns the response to be sent to Hip Chat
+ * @param  {Object} responseType - a response object
+ * @returns {Object} a response to be sent to HipChat
  */
 exports.buildStaticResponse = function (data, responseType) {
 
