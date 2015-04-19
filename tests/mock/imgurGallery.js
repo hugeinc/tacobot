@@ -114,28 +114,5 @@ module.exports = {
         "mp4": "http:\/\/i.imgur.com\/vXPqOlI.mp4",
         "link": "http:\/\/i.imgur.com\/vXPqOlI.gif",
         "looping": true
-    }, {
-        "id": "1m8NjmM",
-        "title": null,
-        "description": null,
-        "datetime": 1428155269,
-        "type": "image\/gif",
-        "animated": true,
-        "width": 500,
-        "height": 375,
-        "size": 271655,
-        "views": 1,
-        "bandwidth": 271655,
-        "vote": null,
-        "favorite": false,
-        "nsfw": null,
-        "section": null,
-        "account_url": null,
-        "account_id": null,
-        "gifv": "http:\/\/i.imgur.com\/1m8NjmM.gifv",
-        "webm": "http:\/\/i.imgur.com\/1m8NjmM.webm",
-        "mp4": "http:\/\/i.imgur.com\/1m8NjmM.mp4",
-        "link": "http:\/\/i.imgur.com\/1m8NjmM.gif",
-        "looping": true
     }], "success": true, "status": 200
 };

@@ -12,7 +12,7 @@ describe('Imgur response parsing', function () {
         var imgur = new Imgur();
         var parsed = imgur.parseResp(mock.imgur.album);
         parsed.should.be.an.Array;
-        parsed.length.should.equal(6);
+        parsed.length.should.equal(5);
         return done();
     });
 
@@ -20,7 +20,7 @@ describe('Imgur response parsing', function () {
         var imgur = new Imgur();
         var parsed = imgur.parseResp(mock.imgur.search);
         parsed.should.be.an.Array;
-        parsed.length.should.equal(60);
+        parsed.length.should.equal(5);
         return done();
     });
 
