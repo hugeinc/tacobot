@@ -1,14 +1,13 @@
 /**
  * Taco Helpers
- * @type {{parseJSON: Function, getRandomIndex: Function}}
  */
 module.exports = {
 
     /**
-     * safely parses a string to JSON
-     * @param str
-     * @returns {object} obj
-     * @returns {Error} obj.error (if JSON fails to parse)
+     * Safely parses a string to JSON.
+     * @param {String} str - the raw JSON string you wish to parse
+     * @returns {Object} obj - the parsed object
+     * @returns {Error} obj.error - exception thrown if and when JSON fails to parse
      */
     parseJSON : function (str) {
         var obj;
@@ -22,8 +21,8 @@ module.exports = {
 
     /**
      * Finds a random index in the passed array
-     * @param  {Array} arr 			 Array to find random index of
-     * @return {String|Array|Object} The value of the random index
+     * @param  {Array} arr
+     * @return {*} The value of the random index
      */
     getRandomIndex : function (arr) {
         var index = Math.round(Math.random() * (arr.length - 1));
@@ -31,11 +30,11 @@ module.exports = {
     },
 
     /**
-     * finds all objects in an array with a top-level property matching a specified value
+     * Finds all objects in an array with a top-level property matching a specified value.
      * @param {Array} arr - the haystack
-     * @param {string} field - the name of the property
-     * @param {*} value of the property you wish to find
-     * @returns {*} the needles
+     * @param {String} field - the name of the property
+     * @param {*} value - the property you wish to find
+     * @returns {*} the needle(s)
      */
     filterBy : function (arr, field, value) {
         var result = arr.filter(function( obj ) {
@@ -45,10 +44,10 @@ module.exports = {
     },
 
     /**
-     * finds the first object in an array with a top-level property matching a specified value
+     * Finds the first object in an array with a top-level property matching a specified value.
      * @param {Array} arr - the haystack
-     * @param {string} field - the name of the property
-     * @param {*} value of the property you wish to find
+     * @param {String} field - the name of the property
+     * @param {*} value - the property you wish to find
      * @returns {*} the needle
      */
     findBy : function (arr, field, value) {
