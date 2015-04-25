@@ -51,7 +51,6 @@ describe('util taco helpers', function () {
         });
     });
 
-
     describe('util.filterBy', function () {
 
         it('Fetches an items from an array with a matching value', function (done) {
@@ -90,7 +89,3 @@ describe('util taco helpers', function () {
     });
 
 });
-
-
-
-

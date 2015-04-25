@@ -1,4 +1,4 @@
-module.exports = {
+{
     "data": [{
         "id": "mVGEscc",
         "title": null,
@@ -115,4 +115,4 @@ module.exports = {
         "link": "http:\/\/i.imgur.com\/vXPqOlI.gif",
         "looping": true
     }], "success": true, "status": 200
-};
+}

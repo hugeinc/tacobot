@@ -1,4 +1,4 @@
-module.exports = {
+{
     "data": [{
         "id": "Qef0yRo",
         "title": "Taco taco taco",
@@ -150,4 +150,4 @@ module.exports = {
         "score": 59,
         "is_album": false
     }], "success": true, "status": 200
-};
+}

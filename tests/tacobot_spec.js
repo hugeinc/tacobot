@@ -1,8 +1,8 @@
-var should = require('should');
-var tacobot	= require('../app/tacobot');
-var mock = require('./mock');
-var sinon = require('sinon');
-var request = require('request');
+var should = require('should'),
+    tacobot = require('../app/tacobot'),
+    mock = require('./mock'),
+    sinon = require('sinon'),
+    request = require('request');
 
 describe('tacobot Hip-Chat Webhook', function () {
 
@@ -15,7 +15,7 @@ describe('tacobot Hip-Chat Webhook', function () {
             done();
         });
 
-        it('Should interpret an image request when it finds the word "pic"', function (done){
+        it('Should interpret an image request when it finds the word "pic"', function (done) {
             var fakeHook = JSON.parse(mock.hipChat.getHook('/taco how about a Pic?'));
             var type = tacobot.getResponseType(fakeHook);
             type.should.equal('image');
@@ -76,7 +76,6 @@ describe('tacobot Hip-Chat Webhook', function () {
 
         });
 
-
         it('Returns a message type "Fact" for "/taco *fact*"', function (done) {
 
             var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco how about a fact?'));
@@ -94,7 +93,6 @@ describe('tacobot Hip-Chat Webhook', function () {
 
         });
 
-
         it('Returns a message type "Image" for "/taco *pic*"', function (done) {
 
             var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco can i see pic?'));
@@ -111,7 +109,7 @@ describe('tacobot Hip-Chat Webhook', function () {
             done();
 
         });
-    })
+    });
 
     describe('Static content responses', function () {
 
@@ -133,7 +131,6 @@ describe('tacobot Hip-Chat Webhook', function () {
                 });
 
         });
-
 
         it('Should return a message type "Fact" for "/taco *fact*"', function (done) {
             // /taco gif
@@ -178,7 +175,7 @@ describe('tacobot Hip-Chat Webhook', function () {
         before(function (done) {
             sinon
                 .stub(request, 'get')
-                .yields(null, {statusCode:200}, mock.imgur.album);
+                .yields(null, {statusCode: 200}, mock.imgur.album);
             done();
         });
 
@@ -222,7 +219,7 @@ describe('tacobot Hip-Chat Webhook', function () {
         it('Should handle service errors from Imgur and still return a response.', function (done) {
             var fakeWebHook = JSON.parse(mock.hipChat.getHook('/taco gif me por favor...'));
             tacobot.roomEvent(fakeWebHook)
-                .always(function(resp){
+                .always(function (resp) {
                     should.exist(resp);
                     should.not.exist(resp.error);
                     resp.should.be.an.object;

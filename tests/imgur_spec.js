@@ -1,8 +1,8 @@
-var should = require('should');
-var sinon = require('sinon');
-var request = require('request');
-var Imgur = require('../app/imgur');
-var mock = require('./mock');
+var should = require('should'),
+    sinon = require('sinon'),
+    request = require('request'),
+    Imgur = require('../app/imgur'),
+    mock = require('./mock');
 
 describe('Imgur response parsing', function () {
 
@@ -70,7 +70,6 @@ describe('Imgur http helper error handling', function () {
 
 });
 
-
 describe('Imgur service helper error handling', function () {
 
     before(function (done) {
@@ -110,7 +109,7 @@ describe('Imgur service helper error handling', function () {
 
 describe('Imgur API search endpoint helper', function () {
 
-    describe("Handles a search result from Imgur", function () {
+    describe('Handles a search result from Imgur', function () {
 
         beforeEach(function (done) {
             sinon
@@ -157,7 +156,6 @@ describe('Imgur API search endpoint helper', function () {
             done();
         });
 
-
         it('Resolves w/ an empty array if nothing is found on search', function (done) {
             var imgur = new Imgur('valid-key');
             imgur.search('asdfkadsdflj +ext:gif nude bea arthur').always(function (resp) {
@@ -168,7 +166,7 @@ describe('Imgur API search endpoint helper', function () {
             });
         });
 
-        it('Rejects w/ an error object with the failed query if nothing is found on getRandom', function (done) {
+        it('Rejects w/ error w/ failed query if nothing is found on getRandom', function (done) {
             var query = 'dakdflakj onions rule!!dkdk';
             var imgur = new Imgur('valid-key');
             imgur.getRandomFromSearch(query).always(function (resp) {
@@ -181,7 +179,6 @@ describe('Imgur API search endpoint helper', function () {
         });
 
     });
-
 
 });
 
