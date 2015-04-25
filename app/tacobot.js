@@ -1,7 +1,7 @@
 var responses = require('./responses'),
     util = require('./util'),
+    config = require('../config'),
     Imgur = require('./imgur'),
-    nconf = require('nconf'),
     $ = require('jquery-deferred');
 
 /**
@@ -70,8 +70,8 @@ exports.imgurResponse = function (data) {
 
     var def = $.Deferred();
     var user = data.item.message.from.name;
-    var albumId = nconf.get('IMGUR:ALBUM_ID');
-    var apiKey = nconf.get('IMGUR:API_KEY');
+    var albumId = config.IMGUR.ALBUM_ID;
+    var apiKey = config.IMGUR.API_KEY;
     var imgur = new Imgur(apiKey);
     var msg;
 
