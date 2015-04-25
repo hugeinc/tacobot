@@ -1,6 +1,6 @@
-var request = require('request');
-var $ = require('jquery-deferred');
-var util = require('./util');
+var request = require('request'),
+    $ = require('jquery-deferred'),
+    util = require('./util');
 
 /**
  * A simple module for searching Imgur.com for images,
@@ -38,9 +38,9 @@ Imgur.prototype.search = function (query, sort, page) {
     var sort = sort || 'top';
 
     var options = {
-        uri: 'https://api.imgur.com/3/gallery/search/'
-                + sort + '/' + page + '/?q=' + query,
-        headers : {
+        uri: 'https://api.imgur.com/3/gallery/search/' +
+                sort + '/' + page + '/?q=' + query,
+        headers: {
             'Authorization': 'Client-ID ' + this.apiKey
         }
     };
@@ -76,7 +76,7 @@ Imgur.prototype.getRandomFromSearch = function (query, sort, page) {
     var def = $.Deferred();
 
     this.search(query, sort, page)
-        .done(function(resp){
+        .done(function (resp) {
             if (resp.length) {
                 def.resolve(util.getRandomIndex(resp));
             } else {
@@ -103,8 +103,8 @@ Imgur.prototype.getAlbum = function (id) {
     var _this = this;
     var def = $.Deferred();
     var options = {
-        uri : 'https://api.imgur.com/3/album/' + id + '/images',
-        headers : {
+        uri: 'https://api.imgur.com/3/album/' + id + '/images',
+        headers: {
             'Authorization': 'Client-ID ' + this.apiKey
         }
     };

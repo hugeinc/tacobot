@@ -23,8 +23,8 @@ exports.roomEvent = function (data) {
             break;
         default:
             def.reject({
-               error : 'tacobot doesn\'t currently support event: '
-                + data.event + '. Lo siento.'
+                error: 'tacobot doesn\'t currently support event: ' +
+                data.event + '. Lo siento.'
             });
             break;
     }
@@ -45,7 +45,7 @@ exports.message = function (data) {
     var def;
     var responseType = exports.getResponseType(data);
 
-    switch(responseType) {
+    switch (responseType) {
         case 'gif':
             def = exports.imgurResponse(data);
             break;
@@ -123,10 +123,10 @@ exports.getResponseType = function (data) {
 exports.buildResponse = function (message, notify, color, messageFormat) {
     return {
         color: color || 'green',
-        message_prefix: '',
+        'message_prefix': '',
         message: message,
         notify: !!notify,
-        message_format: messageFormat || 'text'
+        'message_format': messageFormat || 'text'
     };
 };
 
@@ -149,7 +149,7 @@ exports.buildStaticResponse = function (data, responseType) {
     switch (responseType) {
 
         case 'fact':
-            response.message = response.message_prefix + ' ' + message;
+            response.message = response['message_prefix'] + ' ' + message;
             break;
         case 'image':
             response.message = '#taco ' + message;
