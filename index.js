@@ -1,24 +1,27 @@
-var tacobot		= require('./app/tacobot');
-
-var express 	= require('express');
-	bodyParser 	= require('body-parser'),
-	app 		= express();
+var tacobot     = require('./app/tacobot'),
+    express     = require('express'),
+    bodyParser  = require('body-parser'),
+    path        = require('path'),
+    app         = express();
 
 app.use(bodyParser.urlencoded({
-	extended: true
+    extended: true
 }));
+
 app.use(bodyParser.json());
 
+// view instanbul test coverage over localhost http://localhost:8000/test-coverage
+app.use('/test-coverage', express.static(path.join(__dirname , 'test-coverage')));
+
 app.get('/', function (req, res) {
-	res.end('taco!');
+    res.end('taco!');
 });
 
 app.post('/', function (req, res) {
-    
-	tacobot.roomEvent(req.body, function (err, message) {
-		res.json(message);
-	});
-
+    tacobot.roomEvent(req.body)
+        .always(function (message) {
+            res.json(message);
+        });
 });
 
 app.listen(8000);

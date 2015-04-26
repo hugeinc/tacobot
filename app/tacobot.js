@@ -1,78 +1,164 @@
-// Get the response object. Probably subject to change
-var responses = require('./responses');
+var responses = require('./responses'),
+    util = require('./util'),
+    config = require('../config'),
+    Imgur = require('./imgur'),
+    $ = require('jquery-deferred');
 
 /**
- * Finds a random index in the passed array
- * @param  {Array} arr 			 Array to find random index of
- * @return {String|Array|Object} The value of the random index
+ * Takes action on various room events, returning a promise.
+ * Promise resolves with a response object for HipChat.
+ * Promise rejects with an error response for HipChat.
+ * @see {@link https://www.hipchat.com/docs/apiv2/webhooks}
+ * @param {Object} data - HipChat WebHook data
+ * @returns {JqueryDeferred}
+ *
  */
-exports.getRandomIndex = function (arr) {
-	var index = Math.round(Math.random() * (arr.length - 1))
-	return arr[index];
-};
+exports.roomEvent = function (data) {
 
-/**
- * Takes action on various room events. See
- * https://www.hipchat.com/docs/apiv2/webhooks for more information
- * @param  {Object}   data Hipchat Web Hook Object
- * @param  {Function} next Callback
- * @return {Object}	       Returns the response to be sent to Hip Chat
- */
-exports.roomEvent = function (data, next) {
+    var def = $.Deferred();
 
-	switch (data.event) {
-		case 'room_message':
-			return exports.message(data, next);
-		default:
-			return next(null, null);
-	}
+    switch (data.event) {
+        case 'room_message':
+            def = exports.message(data);
+            break;
+        default:
+            def.reject({
+                error: 'tacobot doesn\'t currently support event: ' +
+                data.event + '. Lo siento.'
+            });
+            break;
+    }
 
-};
-
-/**
- * Generates a random response and returns it
- * @param  {Object}   data Hipchat Web Hook Object
- * @param  {Function} next Callback
- * @return {Object}	       Returns the response to be sent to Hip Chat
- */
-exports.message = function (data, next) {
-
-	// Random response type
-	var responseType = exports.getRandomIndex(responses);
-
-	var response = exports.messageType(data, responseType);
-
-	return next(null, response);
+    return def.promise();
 
 };
 
 /**
- * Returns a message based on the responseType
- * @param  {Object} data Hipchat Web Hook Object
- * @param  {Object} responseType The response object
- * @return {Object}	       Returns the response to be sent to Hip Chat
+ * Generates a response based on HipChat WebHook data, returning a promise.
+ * Promise resolves with a response object for HipChat.
+ * Promise rejects with an error response for HipChat.
+ * @param  {Object} data - HipChat WebHook Object
+ * @returns {JqueryDeferred}
  */
-exports.messageType = function (data, responseType) {
+exports.message = function (data) {
 
-	// Get user information
-	var user = data.item.message.from.name;
+    var def;
+    var responseType = exports.getResponseType(data);
 
-	// Get a random message
-	var message = exports.getRandomIndex(responseType.messages);
+    switch (responseType) {
+        case 'gif':
+            def = exports.imgurResponse(data);
+            break;
+        default:
+            def = $.Deferred();
+            def.resolve(exports.buildStaticResponse(data, responseType));
+            break;
+    }
 
-	// Take action based on random message type
-	switch (responseType.type) {
-		case 'says':
-			responseType.response.message = user + ' ' + message;
-			break;
-		case 'fact':
-			responseType.response.message = responseType.response.message_prefix + ' ' + message;
-			break;
-		case 'image':
-			responseType.response.message = '#taco ' + message;
-			break;
-	}
+    return def.promise();
 
-	return responseType.response;
+};
+
+/**
+ * Fetches a random GIF from the Imgur TacoBot album, returning a promise.
+ * Promise resolves with a response object for HipChat.
+ * Promise rejects with an error response for HipChat.
+ * @param {Object} data - a HipChat Web Hook Object
+ * @returns {JqueryDeferred}
+ */
+exports.imgurResponse = function (data) {
+
+    var def = $.Deferred();
+    var user = data.item.message.from.name;
+    var albumId = config.IMGUR.ALBUM_ID;
+    var apiKey = config.IMGUR.API_KEY;
+    var imgur = new Imgur(apiKey);
+    var msg;
+
+    imgur.getRandomFromAlbum(albumId)
+        .done(function (resp) {
+            msg = '#taco ' + resp.link;
+            def.resolve(exports.buildResponse(msg, true, 'green'))
+        }).fail(function (resp) {
+            msg = 'lo siento... ' + user + '. ' + resp.data.error;
+            def.resolve(exports.buildResponse(msg, true, 'red'))
+        });
+    return def.promise();
+
+};
+
+/**
+ * Determines the type of response based on the content of the HipChat WebHook Object.
+ * If type can't be determined, returns type "says".
+ * @param {Object} data - a HipChat WebHook Object
+ * @returns {String}
+ */
+exports.getResponseType = function (data) {
+    var msg = data.item.message.message.split('/taco').pop().toLowerCase();
+    // probably a smarter way to do this
+    if (msg.indexOf('gif') > -1) {
+        return 'gif';
+    }
+    if (msg.indexOf('pic') > -1) {
+        return 'image';
+    }
+    if (msg.indexOf('image') > -1) {
+        return 'image';
+    }
+    if (msg.indexOf('fact') > -1) {
+        return 'fact';
+    }
+
+    return 'says';
+};
+
+/**
+ * Builds a response object to be sent to HipChat.
+ * @param {String} message - the message you want to appear
+ * @param {Boolean} notify - optional, defaults to true
+ * @param {String} color - optional, defaults to "green"
+ * @param {String} messageFormat - optional, defaults to "text"
+ * @returns {Object} a response to be sent to HipChat
+ */
+exports.buildResponse = function (message, notify, color, messageFormat) {
+    return {
+        color: color || 'green',
+        'message_prefix': '',
+        message: message,
+        notify: !!notify,
+        'message_format': messageFormat || 'text'
+    };
+};
+
+/**
+ * Creates a Response Object from static content based on the responseType.
+ * @param  {Object} data - Hipchat Web Hook Object
+ * @param  {Object} responseType - a response object
+ * @returns {Object} a response to be sent to HipChat
+ */
+exports.buildStaticResponse = function (data, responseType) {
+
+    // Get user information
+    var user = data.item.message.from.name;
+    var response = util.findBy(responses, 'type', responseType);
+    var message = util.getRandomIndex(response.messages);
+
+    response = response.response;
+
+    // Take action based on message type
+    switch (responseType) {
+
+        case 'fact':
+            response.message = response['message_prefix'] + ' ' + message;
+            break;
+        case 'image':
+            response.message = '#taco ' + message;
+            break;
+        default:
+            response.message = user + ' ' + message;
+            break;
+    }
+
+    return response;
 
 };

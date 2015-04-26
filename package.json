@@ -4,8 +4,8 @@
   "description": "Sends random Taco images and quotes to a HipChat room",
   "main": "index.js",
   "scripts": {
-  	"start": "node index",
-	"test": "NODE_ENV=test istanbul cover --report html node_modules/.bin/_mocha --recursive -- -R spec tests/**/*.js"
+    "start": "node index",
+    "test": "NODE_ENV=test istanbul cover --report html node_modules/.bin/_mocha --recursive -- -R spec tests/**/*_spec.js"
   },
   "repository": {
     "type": "git",
@@ -24,11 +24,13 @@
     "istanbul": "^0.3.6",
     "mocha": "^2.1.0",
     "should": "^5.0.1",
-    "sinon": "^1.12.2",
+    "sinon": "^1.14.1",
     "supertest": "^0.15.0"
   },
   "dependencies": {
     "body-parser": "^1.12.0",
-    "express": "^4.12.0"
+    "express": "^4.12.0",
+    "jquery-deferred": "^0.3.0",
+    "request": "^2.54.0"
   }
 }
