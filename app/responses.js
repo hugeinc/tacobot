@@ -15,7 +15,10 @@ module.exports = [
 			'ate so many tacos that they can\'t move!',
 			'wants a taco',
 			'is gonna nosh on a taco',
-			'gave everyone a taco'
+			'gave everyone a taco',
+			'had a taco overdose',
+			'dreamt about free tacos last night',
+			'is a convict taco addict'
 		]
 	},
 	{
