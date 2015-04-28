@@ -15,7 +15,10 @@ module.exports = [
 			'ate so many tacos that they can\'t move!',
 			'wants a taco',
 			'is gonna nosh on a taco',
-			'gave everyone a taco'
+			'gave everyone a taco',
+			'had a taco overdose',
+			'dreamt about free tacos last night',
+			'is a convict taco addict'
 		]
 	},
 	{
@@ -61,7 +64,8 @@ module.exports = [
 			'http://thumb7.shutterstock.com/thumb_large/2501749/208111609/stock-vector-fish-taco-cartoon-208111609.jpg',
 			'http://blanksigngraphics.com/1024/vector-illustration-of-a-happy-taco-holding-a-blank-sign-and-waving-by-toons4biz-205.jpg',
 			'http://previews.123rf.com/images/hatza/hatza1305/hatza130500024/19970321-Cartoon-burrito-Stock-Vector-cartoon-kebab-mexican.jpg',
-			'http://previews.123rf.com/images/hatza/hatza1305/hatza130500025/19970338-Cartoon-burrito-Stock-Vector-mexican.jpg'
+			'http://previews.123rf.com/images/hatza/hatza1305/hatza130500025/19970338-Cartoon-burrito-Stock-Vector-mexican.jpg',
+			'http://media0.giphy.com/media/sUHGqhjQtx95u/giphy.gif'
 		]
 	}
 ];
