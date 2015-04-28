@@ -16,7 +16,7 @@ Fetch a taco pic:
 
     /taco pic
 
-Fetch a taco GIF:
+Fetch a [taco GIF](https://imgur.com/a/ABEs0):
 
     /taco gif
 
