@@ -150,12 +150,15 @@ exports.buildStaticResponse = function (data, responseType) {
 
         case 'fact':
             response.message = response['message_prefix'] + ' ' + message;
+            response.color = 'yellow';
             break;
         case 'image':
             response.message = '#taco ' + message;
+            response.color = 'green';
             break;
         default:
             response.message = user + ' ' + message;
+            response.color = 'purple';
             break;
     }
 

@@ -67,6 +67,7 @@ describe('tacobot Hip-Chat Webhook', function () {
 
             response.should.be.an.object;
             response.should.have.property('color').which.is.a.string;
+            response.color.should.equal('purple');
             response.should.have.property('message_prefix').which.is.a.string;
             response.should.have.property('message').which.is.a.string;
             response.should.have.property('notify').which.is.a.boolean;
@@ -84,6 +85,7 @@ describe('tacobot Hip-Chat Webhook', function () {
 
             message.should.be.an.object;
             message.should.have.property('color').which.is.a.string;
+            message.color.should.equal('yellow');
             message.should.have.property('message_prefix').which.is.a.string;
             message.should.have.property('message').which.is.a.string;
             message.should.have.property('notify').which.is.a.boolean;
@@ -101,6 +103,7 @@ describe('tacobot Hip-Chat Webhook', function () {
 
             message.should.be.an.object;
             message.should.have.property('color').which.is.a.string;
+            message.color.should.equal('green');
             message.should.have.property('message_prefix').which.is.a.string;
             message.should.have.property('message').which.is.a.string;
             message.should.have.property('notify').which.is.a.boolean;
@@ -123,6 +126,7 @@ describe('tacobot Hip-Chat Webhook', function () {
                     should.not.exist(resp.error);
                     resp.should.be.an.object;
                     resp.should.have.property('color').which.is.a.string;
+                    resp.color.should.equal('purple');
                     resp.should.have.property('message_prefix').which.is.a.string;
                     resp.should.have.property('message').which.is.a.string;
                     resp.should.have.property('notify').which.is.a.boolean;
@@ -142,6 +146,7 @@ describe('tacobot Hip-Chat Webhook', function () {
                     should.not.exist(resp.error);
                     resp.should.be.an.object;
                     resp.should.have.property('color').which.is.a.string;
+                    resp.color.should.equal('yellow');
                     resp.should.have.property('message_prefix').which.is.a.string;
                     resp.should.have.property('message').which.is.a.string;
                     resp.should.have.property('notify').which.is.a.boolean;
@@ -159,6 +164,7 @@ describe('tacobot Hip-Chat Webhook', function () {
                     should.not.exist(resp.error);
                     resp.should.be.an.object;
                     resp.should.have.property('color').which.is.a.string;
+                    resp.color.should.equal('green');
                     resp.should.have.property('message_prefix').which.is.a.string;
                     resp.should.have.property('message').which.is.a.string;
                     resp.should.have.property('notify').which.is.a.boolean;
@@ -192,6 +198,7 @@ describe('tacobot Hip-Chat Webhook', function () {
                     should.not.exist(resp.error);
                     resp.should.be.an.object;
                     resp.should.have.property('color').which.is.a.string;
+                    resp.color.should.equal('green');
                     resp.should.have.property('message_prefix').which.is.a.string;
                     resp.should.have.property('message').which.is.a.string;
                     resp.should.have.property('notify').which.is.a.boolean;
